@@ -10,14 +10,14 @@ if sys.platform == "win32":
         PYSIDE2_UIC = os.path.join(PY_EXE_PATH, "Scripts", "pyside2-uic.exe")
         assert (os.path.exists(PYSIDE2_RCC) and os.path.exists(PYSIDE2_UIC))
     except AssertionError:
-        logging.ERROR("PySide2 is not found! PySide2 may be installed on Anaconda!")
+        logging.error("PySide2 is not found! PySide2 may be installed on Anaconda!")
         try:
             import PySide2
             PYSIDE2_PKG_PATH = os.path.abspath(os.path.join(PySide2.__file__, os.pardir))
             PYSIDE2_RCC = os.path.join(PYSIDE2_PKG_PATH, "pyside2-rcc.exe")
             PYSIDE2_UIC = None
         except ImportError:
-            logging.ERROR("PySide2 is not installed! Please install PySide2 first.")
+            logging.error("PySide2 is not installed! Please install PySide2 first.")
 else:
     raise NotImplementedError
 
@@ -29,23 +29,41 @@ class UiGenerator:
         self.__rc_dir = rc_dir
         self.__out_dir = out_dir
 
-    def compile_rc_files(self, rc_dir=None, out_dir=None):
-        self.__out_dir = out_dir
+    def compile_all(self, rc_dir=None, ui_dir=None, out_dir=None):
         if rc_dir:
-            self.__compile_resource_files(rc_dir)
-        elif self.__ui_dir:
-            self.__compile_resource_files(self.__rc_dir)
-        else:
-            logging.WARNING("Please specify a resources file directory!")
-
-    def compile_ui_files(self, ui_dir=None, out_dir=None):
-        self.__out_dir = out_dir
+            self.__rc_dir = rc_dir
         if ui_dir:
-            self.__compile_ui_files(ui_dir)
-        elif self.__ui_dir:
+            self.__ui_dir = ui_dir
+        if out_dir:
+            self.__out_dir = out_dir
+
+        if self.__ui_dir and self.__rc_dir:
+            self.__compile_resource_files(self.__rc_dir)
             self.__compile_ui_files(self.__ui_dir)
         else:
-            logging.WARNING("Please specify a ui file directory!")
+            logging.warning("Please specify a resources file directory and a ui file directory!")
+
+    def compile_rc_files(self, rc_dir=None, out_dir=None):
+        if rc_dir:
+            self.__rc_dir = rc_dir
+        if out_dir:
+            self.__out_dir = out_dir
+
+        if self.__ui_dir:
+            self.__compile_resource_files(self.__rc_dir)
+        else:
+            logging.warning("Please specify a resources file directory!")
+
+    def compile_ui_files(self, ui_dir=None, out_dir=None):
+        if ui_dir:
+            self.__ui_dir = ui_dir
+        if out_dir:
+            self.__out_dir = out_dir
+
+        if self.__ui_dir:
+            self.__compile_ui_files(self.__ui_dir)
+        else:
+            logging.warning("Please specify a ui file directory!")
 
     def __compile_resource_files(self, rc_dir):
         # To compile qrc file from cmd line, use following line
@@ -79,5 +97,5 @@ class UiGenerator:
                         py_file_path = os.path.join(self.__out_dir, "ui_" + name_str + ".py")
                     else:
                         py_file_path = os.path.join(root, "ui_" + name_str + ".py")
-                    cmd_string = "{0} {1} -o {2}".format(PYSIDE2_RCC, ui_file_path, py_file_path)
+                    cmd_string = "{0} {1} -o {2}".format(PYSIDE2_UIC, ui_file_path, py_file_path)
                     os.system(cmd_string)
