@@ -28,6 +28,7 @@ class UiGenerator:
         self.__ui_dir = ui_dir
         self.__rc_dir = rc_dir
         self.__out_dir = out_dir
+        self.__check_if_output_exist(out_dir)
 
     def compile_all(self, rc_dir=None, ui_dir=None, out_dir=None):
         if rc_dir:
@@ -36,6 +37,7 @@ class UiGenerator:
             self.__ui_dir = ui_dir
         if out_dir:
             self.__out_dir = out_dir
+            self.__check_if_output_exist(out_dir)
 
         if self.__ui_dir and self.__rc_dir:
             self.__compile_resource_files(self.__rc_dir)
@@ -48,6 +50,7 @@ class UiGenerator:
             self.__rc_dir = rc_dir
         if out_dir:
             self.__out_dir = out_dir
+            self.__check_if_output_exist(out_dir)
 
         if self.__ui_dir:
             self.__compile_resource_files(self.__rc_dir)
@@ -59,11 +62,16 @@ class UiGenerator:
             self.__ui_dir = ui_dir
         if out_dir:
             self.__out_dir = out_dir
+            self.__check_if_output_exist(out_dir)
 
         if self.__ui_dir:
             self.__compile_ui_files(self.__ui_dir)
         else:
             logging.warning("Please specify a ui file directory!")
+
+    def __check_if_output_exist(self, out_dir):
+        if not os.path.isdir(out_dir):
+            os.makedirs(out_dir)
 
     def __compile_resource_files(self, rc_dir):
         # To compile qrc file from cmd line, use following line

@@ -29,4 +29,7 @@ def main():
 
 
 if __name__ == '__main__':
+    from misc.debug import except_hook
+    sys.excepthook = except_hook
+
     main()
