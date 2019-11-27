@@ -1,8 +1,11 @@
 import sys
 import logging
 from PySide2.QtWidgets import QApplication
-from PySide2.QtQml import QQmlApplicationEngine
+from PySide2.QtQml import QQmlApplicationEngine, qmlRegisterType
 from PySide2.QtCore import QUrl
+from PySide2 import QtCore
+from src.QmlVTKRenderWindowInteractor import QmlVTKRenderWindowInteractor
+from example.gui.main_window import MainWindow
 
 
 class ExampleApp(QApplication):
@@ -19,12 +22,24 @@ def main():
     import example.gui.rc_qml as rc_qml
     rc_qml.qInitResources()
 
+    from misc.debug import qt_message_handler
+    QtCore.qInstallMessageHandler(qt_message_handler)
     app = ExampleApp(sys.argv)
+
     engine = QQmlApplicationEngine()
+    qmlRegisterType(QmlVTKRenderWindowInteractor, "QmlVTK", 1, 0, "Interactor")
+
+    context = engine.rootContext()
+    main_window = MainWindow(engine)
+    context.setContextProperty("mainWindow", main_window)
+
     engine.load(QUrl.fromLocalFile(":/qml/app.qml"))
+
     if len(engine.rootObjects()) == 0:
         logging.error("No QML file is loaded. Application Exit!")
         return
+
+
     sys.exit(app.exec_())
 
 
