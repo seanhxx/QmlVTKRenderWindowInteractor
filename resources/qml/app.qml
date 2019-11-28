@@ -22,15 +22,12 @@ ApplicationWindow {
         color: "red"
 
         Interactor {
-            id: qmlVTKRenderWindowInteractor
-            objectName: "interactor1"
+            id: interactor
+            objectName: "interactor"
             Text{
                 text: "interactor is here"
             }
 
-//            color: "green"
-//            width: 200
-//            height: 200
             anchors.fill: parent
             MouseArea{
                 anchors.fill: parent

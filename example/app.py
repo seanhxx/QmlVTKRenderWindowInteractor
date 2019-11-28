@@ -4,7 +4,7 @@ from PySide2.QtWidgets import QApplication
 from PySide2.QtQml import QQmlApplicationEngine, qmlRegisterType
 from PySide2.QtCore import QUrl
 from PySide2 import QtCore
-from src.QmlVTKRenderWindowInteractor import QmlVTKRenderWindowInteractor
+from src.QmlOpenGLWindowInteractor import QmlOpenGLWindowInteractor
 from example.gui.main_window import MainWindow
 
 
@@ -27,7 +27,7 @@ def main():
     app = ExampleApp(sys.argv)
 
     engine = QQmlApplicationEngine()
-    qmlRegisterType(QmlVTKRenderWindowInteractor, "QmlVTK", 1, 0, "Interactor")
+    qmlRegisterType(QmlOpenGLWindowInteractor, "QmlVTK", 1, 0, "Interactor")
 
     context = engine.rootContext()
     main_window = MainWindow(engine)
