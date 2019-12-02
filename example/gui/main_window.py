@@ -4,15 +4,16 @@ from src.QmlOpenGLWindowInteractor import QmlOpenGLWindowInteractor
 
 
 class MainWindow(QObject):
-    def __init__(self, engine):
+    def __init__(self):
         super(MainWindow, self).__init__()
-        self.__engine = engine
 
     @Slot(int, int, int)
     def mousePressHandler(self, button:int, x:int, y:int):
         print(button)
         print((x,y))
-        rootObject = self.__engine.rootObjects()[0]
+        current_context = QQmlApplicationEngine.contextForObject(self)
+        engine = current_context.engine()
+        rootObject = engine.rootObjects()[0]
         self.__interactor:QmlOpenGLWindowInteractor = rootObject.findChild(QmlOpenGLWindowInteractor, "interactor")
         if self.__interactor:
             self.__interactor.test_method()

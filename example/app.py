@@ -30,7 +30,8 @@ def main():
     qmlRegisterType(QmlOpenGLWindowInteractor, "QmlVTK", 1, 0, "Interactor")
 
     context = engine.rootContext()
-    main_window = MainWindow(engine)
+    main_window = MainWindow()
+    engine.setContextForObject(main_window, context)
     context.setContextProperty("mainWindow", main_window)
 
     engine.load(QUrl.fromLocalFile(":/qml/app.qml"))
