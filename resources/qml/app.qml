@@ -24,21 +24,16 @@ ApplicationWindow {
         Interactor {
             id: interactor
             objectName: "interactor"
-            Text{
-                text: "interactor is here"
-            }
-
             anchors.fill: parent
-            MouseArea{
-                anchors.fill: parent
-                onPressed:{
-                    mainWindow.mousePressHandler(pressedButtons, mouseX, mouseY);
-                }
-            }
+
+//            MouseArea{
+//                anchors.fill: parent
+//                onPressed:{
+//                    mainWindow.mousePressHandler(pressedButtons, mouseX, mouseY);
+//                }
+//            }
 
         }
-
-
 
     }
 

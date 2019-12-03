@@ -1,4 +1,4 @@
-from PySide2.QtCore import QSize, qDebug
+from PySide2.QtCore import QSize, qDebug, Qt
 from PySide2.QtGui import QMouseEvent
 from PySide2.QtQuick import QQuickFramebufferObject
 from .QmlVTKOpenGLRenderWIndowInteractor import QmlVTKOpenGLRenderWindowInteractor
@@ -9,6 +9,7 @@ class QmlOpenGLWindowInteractor(QQuickFramebufferObject):
     def __init__(self, parent=None):
         # super().__init__()
         super(QmlOpenGLWindowInteractor, self).__init__(parent)
+        self.setAcceptedMouseButtons(Qt.LeftButton | Qt.RightButton)
 
     def createRenderer(self) -> QQuickFramebufferObject.Renderer:
         qDebug("create renderer now")
@@ -18,6 +19,7 @@ class QmlOpenGLWindowInteractor(QQuickFramebufferObject):
 
     def mousePressEvent(self, event:QMouseEvent):
         qDebug("mouse press event")
+        print("mouse press event on interactor")
         # print("mouse press event: {}".format(event.button()) )
 
     def test_method(self):
