@@ -8,6 +8,16 @@ from src.QmlOpenGLWindowInteractor import QmlOpenGLWindowInteractor
 from example.gui.main_window import MainWindow
 
 
+def set_vtk_log():
+    import os
+    import vtk
+    log_path = os.path.join("vtk_log.txt")
+    fow = vtk.vtkFileOutputWindow()
+    fow.SetFileName(log_path)
+    ow = vtk.vtkOutputWindow()
+    ow.SetInstance(fow)
+
+
 class ExampleApp(QApplication):
     def __init__(self, sys_argv):
         super(ExampleApp, self).__init__(sys_argv)
@@ -47,5 +57,7 @@ def main():
 if __name__ == '__main__':
     from misc.debug import except_hook
     sys.excepthook = except_hook
+
+    set_vtk_log()
 
     main()
