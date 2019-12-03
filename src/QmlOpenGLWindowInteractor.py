@@ -19,7 +19,6 @@ class QmlOpenGLWindowInteractor(QQuickFramebufferObject):
 
     def mousePressEvent(self, event:QMouseEvent):
         qDebug("mouse press event")
-        print("mouse press event on interactor")
         # print("mouse press event: {}".format(event.button()) )
 
     def test_method(self):
